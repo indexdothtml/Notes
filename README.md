@@ -1,1 +1,1 @@
-# Notes2
+# Repository contains my notes for all subjects.
