@@ -144,3 +144,184 @@ export default function BlogPost({ params }) {
 ```
 
 Then you can use this endpoint name to query the database and find the data regarding this endpoint and show it to user.
+
+## Link component from Next.js
+
+Link component from "next/link" is used to define hyperlink to other resource like pages.
+It is similar like anchor tag in HTML but adds some functionality to cache the pages and gives the feel of single page application.
+If you are adding any hyperlink to another page use "Link" component instead of anchor tag.
+
+For ex -
+
+```js
+<Link href="/about">About page</Link>
+```
+
+## Difference between image import and usage in React and Next.js
+
+In React, if you want to use image you just import it store it in any name and then use it inside the "src" attribute of "img" tag.
+For ex -
+
+```js
+import MealIcon from "./assets/meal.png";
+
+<img src={MealIcon} alt="meal" />;
+```
+
+In Next.js, if you want to use image you need to extract "src" key from object.
+Next.js create an object of imported image and you need to access property of image to show it.
+For ex -
+
+```js
+import MealIcon from "@/assets/meal.png";
+
+console.log(MealIcon);
+```
+
+If you try to print this in console it will look like this
+
+```js
+//console.log(MealIcon) will show below object.
+{
+  src: '/_next/static/media/meal.8ae1685e.png',
+  height: 600,
+  width: 600,
+  blurDataURL: '/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmeal.8ae1685e.png&w=8&q=70',
+  blurWidth: 8,
+  blurHeight: 8
+}
+```
+
+So, In Next.js if you want to show image on screen you need to access "src" property from this object and pass it to "src" attribute of <img> tag.
+
+```js
+<img src={MealIcon.src} alt="meal" />
+```
+
+NOTE: This is for the information, but we don't use this approch to show image on our website, instead we use <Image /> component from "next/image", which Next.js provide to us.
+
+## Styling Next.js project
+
+https://nextjs.org/docs/app/getting-started/css
+
+There are different methods of styling the Next.js project.
+
+1. globals.css file
+   With globals.css file you can add style globally to all pages. This file will be created inside app/ directory.
+
+2. {fileName}.module.css file
+   This file is used to add css styles with scoped to component.
+   The styles defined with this file name will be scoped to perticular component, It will be scoped to component in which we are importing this style.
+   This file creates the object of style and we can access styles with the properties of that object.
+   For ex -
+
+```js
+// app/blog/blog.module.css
+
+.blog {
+  padding: 24px;
+}
+```
+
+```js
+// app/blog/page.js
+
+import styles from "./blog.module.css";
+
+export default function Layout() {
+  return <main className={styles.blog}></main>;
+}
+```
+
+You can check how we are accessing styles from the file like "styles.blog" and this style and all the styles from module.css file will be scoped to this component only after that import. So if you add same name style in other file and import it in other component it will not create name conflict and overwrite the style.
+
+3. Tailwind CSS
+
+You can use Tailwind CSS to style the pages.
+
+https://nextjs.org/docs/app/guides/tailwind-css
+
+## Image component in Next.js
+
+like Link component Next.js provide Image component to show the images on our website.
+Image component extends the HTML <img> tag to automatically optimize the image for better performance as per the browser support.
+Image component provides lots of functionality you can see all the props which we can pass to the Image component. https://nextjs.org/docs/app/api-reference/components/image
+But more useful one are src, alt, fill, priority etc.
+
+Basic use
+
+```js
+import Image from "next/image";
+
+export default function Page() {
+  return (
+    <Image
+      src="/profile.png"
+      width={500}
+      height={500}
+      alt="Picture of the author"
+    />
+  );
+}
+```
+
+Or if you are importing image then you can pass imported image object directly without accessing src propertiy from it. Image component will use that imported image object to optimize and infer the dimentions of image as well.
+
+```js
+import Image from "next/image";
+
+import MealsIcon from "@/assets/meals.png";
+
+export default function Page() {
+  return (
+    <Image
+      src={MealsIcon}
+      width={500}
+      height={500}
+      alt="Picture of the author"
+    />
+  );
+}
+```
+
+Image component also convert image into best supported image by the browser, for example if client opens the website in chrome then Image component convert it into ".webp" format instead of using ".png". So ".webp" is most supported by chrome browser.
+
+Instead of lazy load if you want image to be load with priority then set priority prop.
+
+```js
+import Image from "next/image";
+
+import MealsIcon from "@/assets/meals.png";
+
+export default function Page() {
+  return (
+    <Image
+      src={MealsIcon}
+      width={500}
+      height={500}
+      alt="Picture of the author"
+      priority
+    />
+  );
+}
+```
+
+## "use client"; in Next.js
+
+Next.js can run component in server-side as well as client-side, some of the features used in components only runs in browser, is it made for client-side and not server-side like "useState" and "useEffect" hook so you have to tell Next.js to compile that file on client-side using `"use client";` at top of the file. Although Next.js still after adding "use client" it first pre-compile that component in server-side then on client-side.
+
+## usePathname hook in Next.js
+
+`usePathname()` hook in Next.js provides the current active url path.
+It is a client component hook, so "use client" declarative required in the component file.
+
+For ex -
+
+1. If current url path is http://localhost:3000/about
+   then it will return `/about`
+
+2. If current url path is http://localhost:3000/dashboard?v=2
+   then it will return `/dashboard`
+
+3. If current url path is http://localhost:3000/blogs/hello-world
+   then it will return `/blogs/hello-world`
