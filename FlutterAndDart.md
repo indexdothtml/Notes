@@ -6,6 +6,8 @@ Flutter is an open-source UI software development kit/UI Framework created by Go
 
 It bundles with UI Framework which contains code packages and utility functions for writing cross-platform app code and Collection of Tools - CLI and software that helps with developing, testing and building cross-platform apps.
 
+To know internal working of Flutter - https://flutteris.com/blog/en/flutter-internals
+
 ## Dart langauge
 
 Dart is a programing language used by Flutter to develop application. It is created by Google.
