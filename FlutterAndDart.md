@@ -148,6 +148,16 @@ A widget is the fundamental building block of the user interface in Flutter app.
 ## MaterialApp widget
 
 MaterialApp widget that wraps a number of widgets that are commonly required for Material Design applications.
+MaterailApp widget setup the app.
+`home` named argument is required, which contains tree of widgets.
+
+For ex -
+
+```dart
+MaterialApp(
+    home: Scaffold(body: Center(child: Text("Hello World!!!"))),
+),
+```
 
 ## Positional argument and Named argument in Dart
 
@@ -214,3 +224,164 @@ There might be children widgets that no need to rebuilt again, we can just rebui
 Internally in device where we are using the application, Garbage collector needs to work more, unnecessary widget rebuilt means garbage collector needs to remove the instance of widget from memory and also memory needs to store duplicate instance of same element if we are reusing that widget in any other location in app.
 
 To avoid this we use const in front of those widgets which developers think will not change after re-render. That will make sure that Flutter will only re-render the widgets that needs to be, the const widgets will not re-render after the refresh.
+
+## Scaffold widget
+
+It implements the basic structure of app, basic design.
+`body` named argument needs to pass to show other widgets on top of scaffold.
+For ex -
+
+```dart
+Scaffold(
+    body: Text("Hello World!");
+)
+```
+
+Scaffold widget in detail or more basic widgets: https://docs.flutter.dev/ui/widgets/basics
+
+## Text widget
+
+It shows any string on app.
+positional argument string required.
+
+```dart
+Text("Hello World!");
+```
+
+Text widget in detail or more basic widgets: https://docs.flutter.dev/ui/widgets/basics
+
+## Center widget
+
+It is used to center the widgets.
+`child` named argument required.
+
+```dart
+Center(
+    child: Text("Hello World!"),
+)
+```
+
+Center widget in detail or more layout widgets: https://docs.flutter.dev/ui/widgets/layout
+
+## Custom Stateless Widget
+
+Custom stateless widget is created by defining class and inheriting stateless widget which is provided by Flutter.
+
+```dart
+// Syntax ->
+
+class YourCustomWidgetClassName extends StatelessWidget {
+    @override
+    Widget build(BuildContext context) {
+        return // widget tree..
+    }
+}
+```
+
+`StatelessWidget` is a class provided by Flutter to create our own Stateless Widget.
+`@override` is a annotation used to let Flutter know that we are overriding function defination from StatelessWidget to our own function defination of the same function name.
+`build()` method Flutter executes by itself when you call your own custom widget constructor function into your widget tree. It will automatically call by Flutter and return your custom Widget tree which you want to return.
+
+For ex -
+
+```dart
+class GradientContainer extends StatelessWidget {
+
+    @override
+    Widget build(BuildContext context) {
+        return Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blueAccent, Colors.deepPurple],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: const Center(
+            child: Text(
+              "Hello World!!!",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+              ),
+            ),
+          ),
+        ),
+    }
+}
+
+// use your custom widget into your widget tree.
+
+runApp(
+    MaterialApp(
+      home: Scaffold(
+        body: GradientContainer(), // when you call your custom widget, Flutter automatically calls build method defined inside your custom widget.
+      ),
+    ),
+  );
+```
+
+Note - If you define custom widget by creating class like above, you will receive one warning like "Constructors for public widgets should have a named 'key' parameter."
+
+This warning comes because, you need to forward `key` named argument to parent class here in this case `StatelessWidget` class.
+For this you need to create first constructor function inside our custom class then calls `super()` function which will forward `key` when you pass argument `key` to `super()` function.
+
+Constructor function can be created with the same name of class + adding parenthesis and a function body like a normal function.
+
+```dart
+class YourCustomWidgetName extends StatelessWidget {
+    // Named argument can be written inside {} in dart.
+    YourCustomWidgetName({/*accept named argument for ex - key*/}) {
+        // some initialization..
+    }
+}
+```
+
+If you don't want to do any initialization and normally just want to resolve that warning and just want to create basic constructor function, it can be created like below.
+
+```dart
+class YourCustomWidgetName extends StatelessWidget {
+    const YourCustomWidgetName({key}): super(key: key) // forwarding "key" which we are accepting in our custom widget to "key" named argument of super function. This "key" which we are receiving inside our custom widget is passed by Flutter itself, while calling our constructor function of our custom widget.
+}
+```
+
+Shortcut for forwarding key, provided by dart is
+
+```dart
+class YourCustomWidgetName extends StatelessWidget {
+    const YourCustomWidgetName({super.key}) // This shortcut will do both, it will accept and forward the "key" to parent's constructor function.
+}
+```
+
+For ex -
+
+```dart
+class GradientContainer extends StatelessWidget {
+
+    const GradientConstainer({super.key});
+
+    @override
+    Widget build(BuildContext context) {
+        return Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blueAccent, Colors.deepPurple],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: const Center(
+            child: Text(
+              "Hello World!!!",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+              ),
+            ),
+          ),
+        ),
+    }
+}
+```
