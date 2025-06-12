@@ -385,3 +385,357 @@ class GradientContainer extends StatelessWidget {
     }
 }
 ```
+
+## variables in Dart
+
+Variables can be created by `var` keyword in dart.
+
+For ex -
+
+```dart
+var greetingsVariable = "Hello";
+```
+
+Dart can infer the type of variable from the initial value.
+
+NOTE: In dart without initialization of variable, it will consider `null` as a default value.
+
+with `var` keyword it is possible to declare variable without initialization.
+
+```dart
+var greetingsVariable;
+
+print(greetingsVariable) // null
+```
+
+In dart variables can be declared with specific type assign to it.
+
+For ex -
+
+```dart
+int favNumber = 6;
+String text = "Hey";
+```
+
+But can't be unintialized like `var`. If required to intialize later then make it optional using '?' chracter after type
+
+```dart
+// This is not allowed
+int favNumber;
+String text;
+
+// Make it optional
+int? favNumber; // this can be either int or null
+String? text; // this can be either String or null
+```
+
+Variables can be unchangable after first initialization, with the help of `const` and `final`
+
+Difference ->
+
+If you know the initial value is fixed, and can be available at compile time then use `const`.
+
+```dart
+// When below line run at compile time, value is already available.
+const creator = "Abhishek";
+//or
+const String creator2 = "Abhishek"; // spcifically defining type as well.
+```
+
+If you know the initial value is fixed, but don't know at compile time, instead it is going to be generate at runtime then use `final`
+
+```dart
+int generateUniqueID() {
+  // generating unique id
+}
+
+// When below line run at compile time, value is not available at that moment, when function will run at runtime at that moment it will generate value and assign it to the variable, but after that at any point of time in code if we try to change variable value it won't accept new value.
+// If value of constant not known at compile time and only known at runtime then 'final' will be used instead of 'const'.
+final generateID = generateUniqueID();
+// or
+final int generateID = generateUniqueID() // specifing type here can be useful then const because it gives some type safty so it will not store any other value then int at runtime for this example.
+```
+
+If value value don't know already, but type is known and variable is not going to change further in code then
+
+```dart
+final String name;
+```
+
+## Instance variables or Properties in classes.
+
+It is possible to accept arguments in custom created widgets.
+
+For ex -
+
+```dart
+class StyledText extends StatelessWidget {
+  const StyledText(this.text, {super.key});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 30.0,
+      ),
+    );
+  }
+}
+```
+
+In above code, arguments are accepted by defining parameter name inside constructor function with `this` keyword.
+
+In above code, we are accepting positional argument called "text" (which is `required` by default) but you can accept named argument as well inside {} brackets (named arguments are `optional` by default)
+
+The line `final String text;` is a property of class or instance variable, without it all methods inside class will not have access of "text" variable.
+
+Although "text" variable is also inside constructor function but, constructor function and other methods inside class are not connected and shares variable automatically, to happen that, properties must need to define.
+
+Normally without `this` keyword you can accept argument like below but you have to manually assign the value to property.
+Because it is very common to accept arguments, Dart given shortcut with `this` keyword.
+
+For ex -
+
+```dart
+class StyledText extends StatelessWidget {
+  const StyledText(String text, {super.key}): outText = text;
+
+  final String outText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      outText,
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 30.0,
+      ),
+    );
+  }
+}
+```
+
+## Constructor function and adding multiple constructor function
+
+Constructor functions as we saw above, it is declared inside class so we can use that class, it creates the object of that class.
+
+For ex - Below `const StyledText(...)` is a constructor function.
+
+```dart
+class StyledText extends StatelessWidget {
+  const StyledText(String text, {super.key}): outText = text;
+
+  final String outText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      outText,
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 30.0,
+      ),
+    );
+  }
+}
+```
+
+But you can add more than one constructor function. With ClassName.anotherConstructorFunctionName()
+
+For ex -
+
+```dart
+class StyledText extends StatelessWidget {
+  const StyledText(String text, {super.key}) : outText = text;
+
+  const StyledText.helloWorld({super.key}) : outText = "Hello World!";
+
+  final String outText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      outText,
+      style: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 30.0,
+      ),
+    );
+  }
+}
+```
+
+So you can use above StyledText Widget like
+
+```dart
+StyledText.helloWorld();
+```
+
+## How to add static images in your Flutter project
+
+1. Create a folder named "assets" though name can be anything but "assets" is convention.
+
+2. Move all your images into "assets/images" folder.
+
+3. In pubspec.yaml file uncomment the "assets:" line which can be look like this
+
+```yaml
+# To add assets to your application, add an assets section, like this:
+# assets:
+#   - images/a_dot_burr.jpeg
+#   - images/a_dot_ham.jpeg
+```
+
+4. Add your images after "assets:" with 1 tab space and "-" symbol before your file path. Important to note here is path to the image file should be relative path and not absolute path, so it should be relative to pubspec.yaml file
+
+5. For ex -
+
+```yaml
+# To add assets to your application, add an assets section, like this:
+assets:
+  - assets/images/image_name1.jpeg
+  - assets/images/image_name2.jpeg
+  - assets/images/image_name3.jpeg
+```
+
+You can add images in your project simply with `Image()` widget provided by Flutter.
+
+```dart
+Image(image: /*image provider widget*/) // NOTE: add example for this
+```
+
+If you have images already in your project suppose in "assets" folder then you can just use another constructor provided by the `Image()` widget called `asset` constructor
+
+For ex -
+
+```dart
+Image.asset('assets/images/image_name1.jpeg');
+```
+
+## Buttons in Flutter
+
+Buttons are common in application so, Flutter provides some already built in Button widgets with different styling and some with different functionality.
+
+Most of the accept two arguments minimum like "onPressed" which require function as a argument and "text" which require Text widget normally to show button text.
+
+Some of the Button widgets require "icon" instead of "text" argument and need "Icon" widget to pass. like "IconButton" widget.
+
+Some of them require only "onPressed" widget at minimum not other argument like "FloatingActionButton" widget.
+
+You can see in detail all the Buttons and use of it here: https://docs.flutter.dev/get-started/fundamentals/user-input
+
+One example -
+
+```dart
+handleOnPress() {
+  // do something when user pressed this button
+}
+
+TextButton(onPressed: handleOnPress, text: Text('Click here')); // Just pass function reference, don't execute when onPressed event will trigger it will automatically find function with the reference you passed and execute it.
+
+//Another way
+TextButton(onPressed: () { /*your logic*/}, Text('Click here')); // () {} this is anonymous function. But it can't be reused.
+
+```
+
+## Row and Column widget in Flutter
+
+Column widget if you have multiple childrens and want to display it vertically one after another.
+
+A widget that displays its children in a vertical array.
+
+To cause a child to expand to fill the available vertical space, wrap the child in an Expanded widget.
+
+The Column widget does not scroll (and in general it is considered an error to have more children in a Column than will fit in the available room). If you have a line of widgets and want them to be able to scroll if there is insufficient room, consider using a ListView.
+
+More information - https://api.flutter.dev/flutter/widgets/Column-class.html?_gl=1*uu9h3z*_ga*MTAzMjcyNjA3MC4xNzQ5NzQ4ODA4*_ga_04YGWK0175*czE3NDk3NDg4MDgkbzEkZzEkdDE3NDk3NTAyNDIkajYwJGwwJGgw
+
+Row widget if you have multiple childrens and want to display it horizontally one after another.
+
+A widget that displays its children in a horizontal array.
+
+To cause a child to expand to fill the available horizontal space, wrap the child in an Expanded widget.
+
+The Row widget does not scroll (and in general it is considered an error to have more children in a Row than will fit in the available room). If you have a line of widgets and want them to be able to scroll if there is insufficient room, consider using a ListView.
+
+More information - https://api.flutter.dev/flutter/widgets/Row-class.html?_gl=1*j0mroq*_ga*MTAzMjcyNjA3MC4xNzQ5NzQ4ODA4*_ga_04YGWK0175*czE3NDk3NDg4MDgkbzEkZzEkdDE3NDk3NTAxOTEkajE4JGwwJGgw
+
+NOTE - Column widget will take full space on its main axis which is on Column (vertically), So Column widget by default takes full height.
+Row widget on other hand take full space on its main axis which is on Row (horizontally), So Row widget by default takes full width.
+
+You can alter this behaviour with `mainAxisSize` property in Column or Row widget, you can set `mainAxisSize: MainAxisSize.min` to take minimum height or width how much its children wants. By default it is set to `MainAxisSize.max`.
+
+## Styling TextButton widget
+
+You can override the default styling of the `TextButton` widget with the passing `style` argument to it.
+
+Easiest way to create style for `TextButton` widget is to call `styleFrom()` constructor from same `TextButton` widget and `styleFrom()` constructor function contains all the styles which you can apply to override the default style TextButton widget.
+
+```dart
+TextButton(
+  onPressed: rollDice,
+  style: TextButton.styleFrom(
+    foregroundColor: Colors.white,
+    textStyle: const TextStyle(fontSize: 20),
+    // padding: const EdgeInsets.only(top: 20),
+  ),
+  child: const Text("Roll Dice"),
+),
+```
+
+## Column spacing in Column widget
+
+There are different ways you can add spacing.
+
+1. `padding` - with padding inside `style` argument you can add spacing between two childrens
+
+For ex -
+
+```dart
+TextButton(
+  onPressed: rollDice,
+  style: TextButton.styleFrom(
+    foregroundColor: Colors.white,
+    textStyle: const TextStyle(fontSize: 20),
+    padding: const EdgeInsets.only(top: 20), // add only 20px on 'top' there are more arguments like 'bottom', 'left', 'right'.
+    //padding: const EdgeInsets.all(20), // you can add in all direction.
+  ),
+  child: const Text("Roll Dice"),
+),
+```
+
+2. `SizedBox()` widget - It will help to add widget specifically Box with some width, height and child if you want to give, default it will not have anything no width, height and child, it will not visible on screen as well, developers define how it looks.
+
+`SizedBox()` widget not change its width or height with its content inside children like container, `SizedBox()` takes fix size which we give it to it, overflow content just get cut out.
+
+You can add space vertically with giving `height` argument to it.
+
+```dart
+Column(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    Image.asset('assets/images/dice-2.png', width: 200),
+    const SizedBox(height: 20), // SizedBox for vertical spacing.
+    TextButton(
+      onPressed: rollDice,
+      style: TextButton.styleFrom(
+        foregroundColor: Colors.white,
+        textStyle: const TextStyle(fontSize: 20),
+        // padding: const EdgeInsets.only(top: 20),
+        // padding: const EdgeInsets.all(20)
+      ),
+      child: const Text("Roll Dice"),
+    ),
+  ],
+),
+```
+
+3. More will come... :)
