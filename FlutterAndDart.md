@@ -18,6 +18,9 @@ The most popular usecase of Dart language is in Flutter framework but it can als
 ## main.dart file in lib
 
 This file is starting point/entry point of Flutter project, it will generate full app, whenever you will execute the main.dart file.
+Flutter by default looks for `lib/main.dart` file name under lib folder, to check main function inside that file, but if doesn't find main.dart file then it gives error.
+If you want to use different file name then you need to tell flutter where to look it, by default it won't look in all files for main function.
+For ex - `flutter run -t lib/my_file.dart`
 
 ## How to execute Flutter project
 
@@ -131,6 +134,8 @@ import 'dart:math' deferred as mathlib;
 `main()` is a special type of function, which you will write at very first time in main.dart file.
 It is invoked/called by Flutter itself so developer no need to call it manually.
 It is starting point of execution of your dart code, which can call `runApp()` another function inside it.
+
+`main` function is not a built-in function, but still flutter compiler will look for this function when you run your app, it is like hardcoded in flutter compiler to look for this function to start executing the app.
 
 ## runApp function in dart
 
@@ -739,3 +744,143 @@ Column(
 ```
 
 3. More will come... :)
+
+## StatefulWidget in Flutter
+
+There are two types of custom widget you can create `StatelessWidget` and `StatefulWidget`.
+
+When to use which:
+
+Whenever you have any changing value in widget, which can trigger change in UI, that time `StatefulWidget` is used.
+
+Whenever you don't have such things and your widgets just accepting arguments or not accepting any arguments also then `StatelessWidget` is used.
+
+How to create StatefulWidget:
+
+Normally whenever State inside the StatefulWidget changes, the `build` method in widget where state got changed and its all children widget's `build` method gets executed again that means re-build, which cause re-rendering of those widgets only which build method got called.
+
+Or in simple terms, the state in which widget gets updated, that widget and that widget's subtree gets re-rendered.
+
+StatefulWidget have to create seperatly in another file so it won't cause problem with other stateless widget and unwanted re-renders.
+Also StatefulWidget needs to be splitted in two classes, first which creates StatefulWidget with extending StatefulWidget and another class which creates State of that widget which extends State object.
+
+```dart
+import 'package:flutter/material.dart';
+
+class DiceRoller extends StatefulWidget {
+  const DiceRoller({super.key});
+
+  // Instead of build method stateful widget force to implement createState method.
+  @override
+  State<DiceRoller> createState() {
+    return _DiceRollerState();
+  }
+}
+
+// The class name starting with _ (underscore) is private class.
+// Private class only be available inside same file where it is declared.
+// State generic object creates the state class which can be used inside our StatefulWidget class.
+class _DiceRollerState extends State<DiceRoller> {
+  var activeDiceImage = 'assets/images/dice-2.png';
+
+  rollDice() {
+    // setState method provided by State class, call build method of same class where it is used and its subtree widget's build method. Which cause re-rendering of those widgets.
+    setState(() {
+      activeDiceImage = 'assets/images/dice-4.png';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset(activeDiceImage, width: 200),
+        const SizedBox(height: 20),
+        TextButton(
+          onPressed: rollDice,
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+            textStyle: const TextStyle(fontSize: 20),
+            // padding: const EdgeInsets.only(top: 20),
+            // padding: const EdgeInsets.all(20)
+          ),
+          child: const Text("Roll Dice"),
+        ),
+      ],
+    );
+  }
+}
+```
+
+## StatelessWidget Vs StatefulWidget
+
+1. StatelessWidget does not store any states, it gets rendered once and never change at runtime, unless parent widget changes.
+   It does not change after it defined once.
+2. StatefulWidget does store states, and whenever state changes with `setState` method, build method gets called and UI gets updated. It does change at runtime, if state get updated, to show updated date in UI.
+
+## Flutter Stateful widget lifecycle
+
+Every Flutter Widget has a built-in lifecycle: A collection of methods that are automatically executed by Flutter (at certain points of time).
+
+There are three extremely important (stateful) widget lifecycle methods you should be aware of:
+
+1. initState(): Executed by Flutter when the StatefulWidget's State object is initialized
+
+2. build(): Executed by Flutter when the Widget is built for the first time AND after setState() was called
+
+3. dispose(): Executed by Flutter right before the Widget will be deleted (e.g., because it was displayed conditionally)
+
+## initState() method in Flutter
+
+`initState()` which can be available inside State class, it will only execute once when state object initialize in stateful widget.
+It is used to do some initialization.
+
+For ex - here we are initializing activeScreen variable first time when object executes passing function reference to that widget.
+
+```dart
+class Quiz extends StatefulWidget {
+  const Quiz({super.key});
+
+  @override
+  State<Quiz> createState() {
+    return _QuizState();
+  }
+}
+
+class _QuizState extends State<Quiz> {
+  Widget? activeScreen;
+
+  @override
+  void initState() {
+    super.initState();
+    activeScreen = StartScreen(switchScreen);
+  }
+
+  void switchScreen() {
+    setState(() {
+      activeScreen = const QuestionsScreen();
+    });
+  }
+
+  //.....
+  //......
+}
+```
+
+## double.infinity in Flutter
+
+In Dart `double.infinity` value constant can provide infinite value, the implementation is like `1.0/0.0`.
+
+Usecase of this can be taking height or/and width as much as possible or available.
+
+For ex -
+
+```dart
+SizedBox(
+  height: 300,
+  width: double.infinity, // takes full available width of the screen.
+)
+```
+
+More info - https://stackoverflow.com/questions/61706455/whats-the-difference-between-double-infinity-and-double-maxfinite-in-dart
