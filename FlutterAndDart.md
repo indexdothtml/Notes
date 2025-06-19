@@ -884,3 +884,106 @@ SizedBox(
 ```
 
 More info - https://stackoverflow.com/questions/61706455/whats-the-difference-between-double-infinity-and-double-maxfinite-in-dart
+
+## use of map() function in flutter.
+
+One useful way of using `map()` function in flutter is to show Widgets dynamically for list data.
+
+For ex - If you want to show list of buttons, for each text in list, and button style will be same.
+Then you can use map function and map those text values with Button Widgets.
+
+Here inside column widget, I want to show buttons dynamically as per the list items. Here I am using my Custom buttom.
+
+```dart
+Column(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Text(
+      activeQuestion.question,
+      style: const TextStyle(color: Colors.white),
+    ),
+    const SizedBox(height: 30),
+    ...activeQuestion.options.map((option) {
+      return OptionButton(option: option, onTap: () {});
+    }),
+  ],
+),
+```
+
+Note - `map()` function maps each item in the list with given function defination and it gives another array or list of widgets in this case `list<OptionButton>`.
+
+So, Column widget just accept Widgets inside its `children` argument and not List<Widgets> so it will give error if you pass list of widgets to just widgets.
+
+So, it is like you are passing list inside another list (children argument), but children list only needs widgets.
+
+To solve this problem you can use spread operator (...) in front of list, so it will take each item from list and put inside children list.
+
+## shuffle() method in dart
+
+`shuffle()` method is method of `List` which is used to randomly change the position of each item in list.
+
+Note - It modifies the original array.
+
+```dart
+List<int> numbers = [1, 2, 4, 5];
+print(numbers) // [1, 2, 3, 5]
+numbers.shuffle();
+print(numbers) // [2, 1, 3, 5] or any random positons
+```
+
+## 'from' and 'of' constructors of List
+
+`from()` and `of()` are the constructors of List class which can be used to create a copy of list
+
+```dart
+List<int> numbers = [1, 2, 4, 5];
+List<int> copyOfNumbers1 = List.of(numbers);
+//or
+List<int> copyOfNumbers2 = List.from(numbers);
+```
+
+## Adding third-party packages into Flutter package.
+
+There is website called `pub.dev` which is official website for all the packages which you can add and use in your Flutter project, this website is supported by google.
+
+Website - https://pub.dev/
+
+Just search the package name in the pub.dev website and choose which package, and there you will get all the details, how to use, install etc.
+
+For ex - If I want to add new font-family into my project, I will search google fonts in `pub.dev` and install it.
+
+After installing it will update in `pubspec.yaml` file under dependencies section.
+
+## 'widget' property in State class
+
+`widget` property in State class refers to the current instance of the Widget class, that the State object is associated with.
+
+With the `widget` property in State class you have an access to the configurations and properties of its Widget class.
+
+For ex - It can access methods, properties in Widget class in State class, to use there.
+
+```dart
+class QuestionsScreen extends StatefulWidget {
+  const QuestionsScreen({super.key, required this.onOptionSelect});
+
+  final void Function(String option) onOptionSelect; // Accepting function as an argument and saving it.
+
+  @override
+  State<QuestionsScreen> createState() {
+    return _QuestionsScreenState();
+  }
+}
+
+class _QuestionsScreenState extends State<QuestionsScreen> {
+  int activeQuestionIndex = 0;
+
+  void handleOption(String option) {
+    widget.onOptionSelect(option); // here it can access onOptionSelect method of its Widget class.
+    setState(() {
+      activeQuestionIndex++;
+    });
+  }
+
+  //... more code
+}
+```
