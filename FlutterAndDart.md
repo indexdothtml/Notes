@@ -987,3 +987,127 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
   //... more code
 }
 ```
+
+## if statement inside List
+
+In Dart, you may also use `if` inside of lists to conditionally add items to lists:
+
+```dart
+final myList = [
+  1,
+  2,
+  if (condition)
+    3
+];
+```
+
+In this example, the number 3 will only be added to myList if condition was met.
+
+Please note that there are NO curly braces around the if statement body. The if statement body also only comprises the next line of code (i.e., you can't have multiple lines of code inside the if statement).
+
+You can also specify an `else` case - an alternative value that may be inserted into the list if condition is not met:
+
+```dart
+final myList = [
+  1,
+  2,
+  if (condition)
+    3
+  else
+    4
+];
+```
+
+Using this feature is optional. Alternatively, you could, for example, also work with a ternary expression:
+
+```dart
+final myList = [
+  1,
+  2,
+  condition ? 3 : 4
+];
+```
+
+Especially when inserting more complex values (e.g., a widget with multiple parameters being set) into a more complex list (e.g., a list of widgets passed to a `Column()` or `Row()`), this feature can lead to more readable code.
+
+## for loop inside List
+
+Just as you can also use the if keyword inside of lists (to add elements conditionally), you can also use the for keyword to add multiple items into a list:
+
+```dart
+final numbers = [5, 6];
+final myList = [
+  1,
+  2,
+  for (final num in numbers)
+    num
+];
+```
+
+In this example, the numbers 5 and 6 will be added to myList (hence myList thereafter is [1, 2, 5, 6]).
+
+The idea behind this loop is to simplify the process of performing some operation on all items in a list.
+
+When used in a list, it's essentially an alternative to the spread operator (`...`):
+
+```dart
+final numbers = [5, 6];
+final myList = [
+  1,
+  2,
+  ...numbers
+];
+```
+
+It can be useful in scenarios where values must be transformed before being added to a list - the for ... in loop can then be used instead of map() + spread operator:
+
+```dart
+final numbers = [5, 6];
+final myList = [
+  1,
+  2,
+  ...numbers.map((n) {
+    return n * 2;
+  }) // adds 10 and 12
+];
+```
+
+can be replaced with:
+
+```dart
+final numbers = [5, 6];
+final myList = [
+  1,
+  2,
+  for (final num in numbers)
+    num * 2 // adds 10 and 12
+];
+```
+
+## Expanded Widget
+
+Expanded Widget, expand children of `Column`, `Row` and `Flex` to fill all avaialble space along Flex widget's main axis.
+
+If written inside `Column`, it fills all available space `Column` main axis i.e - vertically.
+
+If written inside `Row`, it fills all available space `Row` main axis i.e - Horizontally.
+
+## Map Collection in Dart
+
+`Map` stores key-value pair, it is generic type so any type is avaialble for key and value.
+But, key should not be repeat, but value can be repeat to different key.
+
+```dart
+Map<String, Object> data; // key is String type and value is object type (so it can store any type value)
+
+data = {
+  'index_number': 0,
+  'first_name': 'Abhishek',
+  'is_admin': true,
+}
+
+// You can access any key with
+print(data['first_name']) // Abhishek
+```
+
+More collections - https://dart.dev/language/collections
