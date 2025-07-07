@@ -127,3 +127,52 @@ app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
 ```
+
+## Virtual DOM in React, how it works? and its benefits
+
+Virtual DOM is in-memory representation of actual DOM, it is helpful for updating actual DOM without interacting with actual DOM directly.
+
+How it works:
+
+1. Initially Virtual DOM will be created, it is the exact same as actual DOM.
+2. Whenever state updates, new Virtual DOM gets created in memory, the current Virtual DOM will be compaired with previous version of Virtual DOM. Finding the difference with the help of Diffing algorithm.
+3. At last only the updated DOM element gets repainted in actual DOM.
+
+Benefits:
+
+1. Virtual DOM, reduces the effort of updating the actual DOM, which can be slow and inefficient.
+2. With the help of Virtual DOM, only the specific part which is changed, that gets updated and not entire DOM gets repainted again.
+3. Virtual DOM, makes update faster.
+
+## How Reconciliation algorithm works
+
+In React, reconciliation is the process through which React updates the DOM to match the desired state of the application. It ensures efficient updates by minimizing direct DOM manipulations, which can be costly in terms of performance.
+
+React's Reconciliation algorithm updates the UI efficiently with the help of different steps.
+
+1. Virtual DOM:
+
+Initially Virtual DOM of actual DOM is created in memory, next time whenever the state updates, A seperate Virtual DOM is created for that.
+
+2. Diffing Algorithm:
+
+The comparison happened between new Virtual DOM with the previous one, with the help of Diffing alogorithm it finds the changes to update the DOM.
+
+3. Batch phase:
+
+React batches all the changes and update the UI, it reduces number of DOM updates.
+
+3. Commit phase:
+
+At last React updates actual DOM, matching with Virtual DOM, only updates the part of element that actually changed, instead of full actual DOM repaint.
+For lists React uses 'key' prop which accepts unique keys for list items, this helps React to keep track of each list items for updating.
+
+## Difference between class component and functional component
+
+1. Syntax: class component uses JavaScript's class syntax introduced in ES6, function component uses JavaScript's function syntax.
+
+2. Syntax Complexity: class component is generally considered as complex to write then function component.
+
+3. State management: class component manages its own state using this.state and function component manages its state using useState hook.
+
+4. Lifecycle methods: class component manages its lifecycle using method like componentDidMount() and componentDidUpdate() and function component manages its lifecycle using useEffect hook.

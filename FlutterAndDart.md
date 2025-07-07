@@ -1111,3 +1111,100 @@ print(data['first_name']) // Abhishek
 ```
 
 More collections - https://dart.dev/language/collections
+
+## initializer list in Dart
+
+If you want to initialize some properties before class body gets execute or whenever constuctor gets called, then initializer list will be useful
+
+```dart
+ConstructorName() : a = 0, b = 0;
+
+final int a;
+final int b;
+```
+
+If parameter is optional and want to set default values, there are two ways to do it, either with setting default values or with initializer list.
+
+With default values:
+
+```dart
+ConstructorName({this.a = 0, this.b = 0});
+
+final int a;
+final int b;
+```
+
+With initializer list:
+
+```dart
+ConstructorName() : a = 0, b = 0;
+
+final int a;
+final int b;
+```
+
+## enum in Dart
+
+enum is used to create fixed number of constant values.
+
+```dart
+enum Category { food, travel, leisure, work }
+```
+
+So, this can be used as a type to another property.
+
+```dart
+final Category category;
+```
+
+## ListView widget and ListView.builder constructor function.
+
+`ListView` Widget creates scrollable list of its children, but whenever `ListView` gets created it generate all its children and render it.
+
+It is good for small list items, but problem is if there are list which you don't know the length and it increses dynamically, suppose user add 1000 items, then `ListView` will generate 1000 items and render its Widgets on screen.
+
+But user's view is limited by its screen view, so it is not useful to render 1000 items which user can't see them all at a time, and it is not good as performance wise.
+
+So, the solution is `ListView.builder` a ListView widget's another constructor function, which can generate list's widget at runtime, whenever it is about to visible on screen, So suppose user has 1000 items in it's list, it won't geneate all at a time, but only those whose going to visible on screen.
+
+conclusion, `ListView` with default constructor function is useful when you have limited and small list.
+`ListView.builder` ListView with builder constructor function is useful when your list length is unclear and will going to be big.
+
+`ListView`
+
+```dart
+ListView(
+  children: [
+    Text('item 1'),
+    // item 2,
+    // item 3 ...
+  ]
+),
+```
+
+`ListView.builder`
+
+```dart
+List<String> colorName = ['red', 'blue', 'green',];
+ListView.builder(
+  itemBuilder: (BuildContext context, int index) {
+    //... itemBuilder function takes a function a argument.
+    // This function gets called for every item in the list and it returns a widget
+    //
+  }
+  itemCount: colorName.length // count needs a length of list which you want to build with builder.
+)
+```
+
+## Difference in ListView and SingleChildScrollView
+
+Both looks same and it is correct that if there are limited and very small list of items then both can be used as alternate, `ListView` or `SingleChildScrollView` with Column widget.
+
+But both have a different purpose.
+
+`ListView` technically useful when you want a scrollable list.
+
+`SingleChildScrollView` is useful usually to wrap Row or Column widget so, they won't overflow when items increses in there children property or screen size gets small.
+Column and Row widgets don't care about screen size and extends infinitly when there children increses. So this cause a overflow or content of Column and Row widget.
+This usually happens when Screen size changes because device can be small and big with screen size.
+At this point `SingleChildScrollView` is useful, it accept one child and it gives its child a ability to scroll if it overflows, So it only gives scroll option if it overflows its parent set height, otherwise it won't give scroll option.
