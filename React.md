@@ -176,3 +176,202 @@ For lists React uses 'key' prop which accepts unique keys for list items, this h
 3. State management: class component manages its own state using this.state and function component manages its state using useState hook.
 
 4. Lifecycle methods: class component manages its lifecycle using method like componentDidMount() and componentDidUpdate() and function component manages its lifecycle using useEffect hook.
+
+## Higher Order Components
+
+A Higher Order Component is a function that takes a component as an argument and returns a new component with enhanced functionality. It allows us to add additional props, modify the component's behavior, or encapsulate common logic that can be shared across multiple components.
+
+```jsx
+function Greet({ name }) {
+  return <p>Hello {name}</p>;
+}
+
+// Method 1
+// function changeName(Component) {
+//   const NewName = (props) => {
+//     return <Component name={props.name} />;
+//   };
+
+//   return NewName;
+// }
+
+// Method 2
+function changeName(Component) {
+  return function (props) {
+    return <Component name={props.newName} />;
+  };
+}
+
+const NewName = changeName(Greet);
+
+function App() {
+  return (
+    <>
+      <Greet name="Abhishek" />
+      <NewName newName="Sakshi" />
+    </>
+  );
+}
+
+export default App;
+```
+
+## `__proto__` in javascript
+
+In JavaScript, **proto** is a property that allows access to an object's prototype. It's a way to interact with the internal [[Prototype]] of an object, which is part of the language's inheritance system.
+
+1. **proto** is a legacy accessor property on objects.
+2. It points to the prototype of the object, which is the object from which it inherits properties and methods.
+3. It’s equivalent to Object.getPrototypeOf(obj) and can be set using Object.setPrototypeOf(obj, prototype).
+
+```js
+const animal = {
+  eats: true,
+};
+
+const rabbit = {
+  jumps: true,
+};
+
+rabbit.__proto__ = animal;
+
+console.log(rabbit.eats); // true
+```
+
+## Prototypes in js
+
+In JavaScript, prototypes are a fundamental concept that powers inheritance and object behavior.
+
+Every JavaScript object has an internal link to another object called its prototype. This prototype object can have its own prototype, and so on — forming a prototype chain.
+
+When you try to access a property or method on an object:
+
+1. JavaScript first looks for it on the object itself.
+2. If not found, it looks up the prototype chain until it finds it or reaches null.
+
+```js
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayHello = function () {
+  console.log(`Hello, I'm ${this.name}`);
+};
+
+const alice = new Person("Alice");
+alice.sayHello(); // Hello, I'm Alice
+```
+
+## Git commands
+
+1. Create new repository in local project directory
+
+```bash
+git init
+```
+
+2. Configure name, email
+
+```bash
+git config --global user.name "Abhishek Kshirsagar"
+git config --global user.email "abhi.kshirsagar1100@gmail.com"
+```
+
+3. Create new branch
+
+```bash
+git branch <branch_name>
+```
+
+4. Checkout to new branch or change branch or switch branch
+
+```bash
+git checkout <branch_name>
+```
+
+5. Create new branch at the same time switch to same newly created branch
+
+```bash
+git checkout -b <branch_name>
+```
+
+6. Download the updates from remote repository but it will not merge
+
+```bash
+git fetch
+```
+
+7. Download the updates from remote repository but it will merge as well.
+
+```bash
+git pull
+```
+
+8. Upload local commits to the remote repository
+
+```bash
+git push
+```
+
+9. Merge changes from another branch to current branch, keeping both branches commits history intact
+
+```bash
+git merge <source_branch>
+```
+
+ex -
+Suppose you have a `feature` branch and want to merge it into `main`
+
+```bash
+git checkout main
+git pull origin main
+git merge feature
+```
+
+10. Merge changes from another branch to current branch, keeping commits linear and clean
+
+```bash
+git rebase <source_branch>
+```
+
+11. Staging changes specific files
+
+```bash
+git add <file_name1> <file_name2>
+```
+
+12. Staging changes all files
+
+```bash
+git add .
+```
+
+13. Commiting changes
+
+```bash
+git commit -m "commit message"
+```
+
+14. Changing commit message
+
+```bash
+git commit --amend -m "new commit message"
+```
+
+15. Unstage changes, remove files from the staging area without deleting changes.
+
+```bash
+git restore --staged <file_name1>
+```
+
+16. Reset Changes: Move commits or changes back to a previous state.
+
+```bash
+git reset --hard <commit_hash>
+```
+
+17. Cloning repository
+
+```bash
+git clone "repository_url"
+```
