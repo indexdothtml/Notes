@@ -17,3 +17,4 @@
 14. Standard for Authorization header `Authorization: Bearer <token>` prefix Bearer is a standard to send authentication token, server understands this Bearer prefix means "anyone has access to this token are authorized to access protected resource."
 15. Point to note that Headers can be logged by proxies or monitoring tools, so Refresh tokens are best to send via httpOnly cookies where broswer send them automatically or if mobile device then by "request body" and "not by request headers in authentication header".
 16. Access token can be send by authentication header, they are short lived so less risk.
+17. It is best to cycle Access as well as Refresh token, while cycling Access token when it expires. When Access token expires, Refreshing it with Refresh token, making new refresh token with access token helps to avoid replay attack.
