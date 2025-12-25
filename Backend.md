@@ -18,3 +18,52 @@
 15. Point to note that Headers can be logged by proxies or monitoring tools, so Refresh tokens are best to send via httpOnly cookies where broswer send them automatically or if mobile device then by "request body" and "not by request headers in authentication header".
 16. Access token can be send by authentication header, they are short lived so less risk.
 17. It is best to cycle Access as well as Refresh token, while cycling Access token when it expires. When Access token expires, Refreshing it with Refresh token, making new refresh token with access token helps to avoid replay attack.
+
+### Error Handler - Globally
+
+1. Signature: Must have 4 arguments → (err, req, res, next) so Express knows it’s an error handler.
+```js
+//error.middleware.js
+
+import APIError from "../utils/apiErrorHandler.js";
+
+const errorHandler = (err, req, res, next) => {
+  return res
+    .status(500)
+    .json(
+      new APIError(
+        "SERVER ERROR",
+        "Internal Server Error",
+        500,
+        process.env.NODE_ENV === "development" ? err.stack : ""
+      )
+    );
+};
+
+export { errorHandler };
+```
+2. Order matters: Register it after all routes so it catches errors from anywhere.
+```js
+//app.js
+
+//...
+app.use("/api/v1/user", userRouter);
+// When there is a request on http://localhost:8000/api/v1/user then request will transfer to userRouter, from there further it will handle.
+// Like http://localhost:8000/api/v1/user/register register endpoint will get handle in userRouter.
+
+// Error handling global middleware.
+// Should be defined at the end after all routes.
+app.use(errorHandler);
+
+export default app;
+```
+3. Default behavior: Without a custom handler, Express sends back an HTML error page.
+4. Error object (err): Standard JS Error → has .name, .message, .stack. You can add custom fields like .status.
+5. Stack traces: Show in development for debugging; hide in production for security and cleaner responses.
+```js
+//.env
+
+NODE_ENV=development
+```
+
+
