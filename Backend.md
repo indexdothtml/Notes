@@ -1,5 +1,15 @@
 # Backend notes
 
+## Project Setup
+1) Create node js project with `npm init`.
+2) Create folders - `/public/temp` (to store uploaded files temporary), `/src` (Main file and other backend code goes here.)
+3) Add .gitignore file. (You can auto generate the contents of gitignore file from online tools available.)
+4) Create `/.env` file to store environment variables.
+5) Inside `/src` folder create three files (or as per requirement you can add more) - `index.js/server.js` (contains code related to establishing connection with db, our http webserver and environment variable configurations.), `app.js` (Contains express middlewares that requires to process request from user, Different routes), `constant.js` (Contains global constants).
+6) Inside `/src` create required folders - `/controllers` (Contains app controller functions like login, logout etc.), `/db` (Contains database connection file which mainly contains functions to connect or disconnect database.), `/middlewares` (Contains app middlewares), `/models` (Contains database schemas for different collections), `/routes` (Contains all enpoints/routes catagorized with router), `/utils` (Contains utility functions).
+7) Nameing of files inside folders such as `/controllers`, `/db`, `/middlewares` etc. are given as per convension, for ex - inside `/controllers` folder `<fileName>.controllers.js` same like this for all other folders.
+8) In `package.json` dev scrip should be added like. `"scripts": { "dev": "nodemon -r dotenv/config src/index.js" }` "-r" flag is "required" flag it includes the package first before starting server, in this case dotenv/config which is required to configure environment variables. (required at the time of development only also prerequisite is nodemon).
+
 ## Rules
 1. Never use 'g' or 'global' flag in regex expression while validating email or password using regex.
 2. Sending request with 'form-data' requires middleware that can handle 'multipart/form-data' like 'multer' package. 'form-data' request can handle files, which requires special package ex- multer.
