@@ -76,4 +76,22 @@ export default app;
 NODE_ENV=development
 ```
 
+### Identify the need of indexes.
+
+1. Run a Query Without Index
+Suppose you have a users collection and you run:
+```js
+db.users.find({ email: "alice@example.com" }).explain("executionStats")
+```
+2. Look at the Output
+The explain() output is detailed, but the key parts are:
+- `winningPlan` → shows how MongoDB executed the query.
+  - If you see `"COLLSCAN"`, it means a collection scan (no index used).
+  - If you see `"IXSCAN"`, it means an index scan (index used).
+- `executionStats` → shows performance metrics:
+  - `nReturned`: number of documents returned.
+  - `totalDocsExamined`: how many documents MongoDB had to check.
+  - `executionTimeMillis`: how long the query took.
+ If `totalDocsExamined` is much larger than `nReturned`, the query is inefficient and needs an index.
+
 
